@@ -27,14 +27,16 @@ public class task {
         laptopSet.add(l8);
 
         boolean flag = true;
-
+        Scanner scan = new Scanner(System.in);
+        System.out.println(
+                "Основное меню. Нажмите соответствующую цифру:\n1-показать все ноутбуки\n2-выбрать по параметрам\n3-выход.");
         while (flag) {
             try {
-                int inputMenu = menu();
-                if (inputMenu < 1 | inputMenu > 3)
-                    System.out.println("Такого действия нет!");
+                int inputUser = scan.nextInt();
+                if (inputUser < 1 | inputUser > 3)
+                    throw new NegativeArraySizeException();
                 else
-                    switch (inputMenu) {
+                    switch (inputUser) {
                         case 1:
                             showAllLaptops(laptopSet);
                             flag = false;
@@ -54,8 +56,12 @@ public class task {
                     }
 
             } catch (Exception e) {
-                System.out.println("Некорректный ввод! Введите цифру!");
+                System.out.println("Некорректный ввод!");
+                main(null);
+                break;
             }
+            scan.close();
+        
 
         }
     }
@@ -83,6 +89,7 @@ public class task {
                             if (inputName == lSet.size()) {
                                 System.out.println("Таких ноутбуков нет!");
                             }
+
                             flag2 = false;
                             break;
 
@@ -115,6 +122,7 @@ public class task {
                             if (inputRam == lSet.size()) {
                                 System.out.println("Таких ноутбуков нет!");
                             }
+
                             flag2 = false;
                             break;
                         case 4:
@@ -131,6 +139,7 @@ public class task {
                                 System.out.println("Таких ноутбуков нет!");
                             }
                             flag2 = false;
+
                             break;
                         case 5:
                             System.out.println("Введите желаемую операционную систему: ");
@@ -145,6 +154,7 @@ public class task {
                             if (inputOs == lSet.size()) {
                                 System.out.println("Таких ноутбуков нет!");
                             }
+
                             flag2 = false;
                             break;
                         case 6:
@@ -160,29 +170,21 @@ public class task {
                             if (inputColour == lSet.size()) {
                                 System.out.println("Таких ноутбуков нет!");
                             }
+
                             flag2 = false;
                             break;
-                        
+
                         default:
                             break;
                     }
                 }
-    
+
             } catch (Exception e) {
                 System.out.println("Некорректный ввод! Введите цифру!");
                 flag2 = false;
             }
         }
         scan.close();
-    }
-
-    public static int menu() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println(
-                "Основное меню. Нажмите соответствующую цифру:\n1-показать все ноутбуки\n2-выбрать по параметрам\n3-выход.");
-        int inputFromUser = scan.nextInt();
-        // scan.close();
-        return inputFromUser;
     }
 
     public static void showAllLaptops(Set<Laptop> set) {
@@ -202,7 +204,7 @@ public class task {
         map.put(5, "Операционная система");
         map.put(6, "Цвет");
 
-        printMap(map);   
+        printMap(map);
     }
 
     public static void printMap(Map<Integer, String> map) {
@@ -210,10 +212,4 @@ public class task {
             System.out.println(item.getKey() + "-" + item.getValue());
         }
     }
-
-    // public static String inputFromUser() {
-    //     Scanner scan = new Scanner(System.in);
-    //     String res = scan.next();
-    //     return res;
-    // }
 }
