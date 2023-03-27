@@ -20,9 +20,9 @@ public class Laptop {
     public String toString() {
         return String.format(
                 "%s, диагональ экрана: %d, RAM: %dGb, ОЗУ: %dGb, ОС: %s, Цвет: %s", name, screenSize,
-                 memory, storage, os, colour);
+                memory, storage, os, colour);
     }
-    
+
     public String getColour() {
         return colour;
     }
@@ -45,5 +45,5 @@ public class Laptop {
 
     public int getStorage() {
         return storage;
-    } 
+    }
 }

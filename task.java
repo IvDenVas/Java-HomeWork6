@@ -7,7 +7,7 @@ import java.util.Set;
 public class task {
     public static void main(String[] args) {
 
-        Laptop l1 = new Laptop("Lenovo", 16, 32, 1024, "Windows", "Gray");
+        Laptop l1 = new Laptop("Lenovo", 17, 32, 1024, "Windows", "Gray");
         Laptop l2 = new Laptop("Asus", 15, 16, 512, "Windows", "Blue");
         Laptop l3 = new Laptop("Acer", 15, 8, 256, "Linux", "Silver");
         Laptop l4 = new Laptop("Acer", 14, 8, 256, "Linux", "Red");
@@ -42,8 +42,13 @@ public class task {
                             flag = false;
                             break;
                         case 2:
-                            criteriaMap();
-                            criteriaFromUser(laptopSet);
+                            Map<Integer, String> mapAllFilters = criteriaMap();
+                            printMap(mapAllFilters);
+                            Map<Integer, String> mapWithOneCriteria = criteriasFromUser();
+                            Map<Integer, String> mapWithCriteriasFromUser = plusCriteria(mapWithOneCriteria,
+                                    mapAllFilters);
+                            // printMap(mapWithCriteriasFromUser);
+                            showLaptopsAfterCriterias(mapWithCriteriasFromUser, laptopSet);
                             flag = false;
                             break;
                         case 3:
@@ -61,130 +66,7 @@ public class task {
                 break;
             }
             scan.close();
-        
-
         }
-    }
-
-    public static void criteriaFromUser(Set<Laptop> lSet) {
-        Scanner scan = new Scanner(System.in);
-        boolean flag2 = true;
-        while (flag2) {
-            int inputCriteria = scan.nextInt();
-            try {
-                if (inputCriteria < 1 | inputCriteria > 6)
-                    System.out.println("Такого критерия нет!");
-                else {
-                    switch (inputCriteria) {
-                        case 1:
-                            System.out.println("Введите желаемого производителя: ");
-                            String criteriaName = scan.next();
-                            int inputName = 0;
-                            for (Laptop laptop : lSet) {
-                                if (laptop.getName().equals(criteriaName)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputName++;
-                            }
-                            if (inputName == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-
-                            flag2 = false;
-                            break;
-
-                        case 2:
-                            System.out.println("Введите желаемую диагональ экрана (13, 14, 15, 16): ");
-                            String criteriaDiag = scan.next();
-                            int inputDiag = 0;
-                            for (Laptop laptop : lSet) {
-                                if (String.valueOf(laptop.getScreenSize()).equals(criteriaDiag)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputDiag++;
-                            }
-                            if (inputDiag == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-
-                            flag2 = false;
-                            break;
-                        case 3:
-                            System.out.println("Введите желаемый объем RAM: ");
-                            String criteriaRam = scan.next();
-                            int inputRam = 0;
-                            for (Laptop laptop : lSet) {
-                                if (String.valueOf(laptop.getMemory()).equals(criteriaRam)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputRam++;
-                            }
-                            if (inputRam == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-
-                            flag2 = false;
-                            break;
-                        case 4:
-                            System.out.println("Введите желаемый объем жесткого диска: ");
-                            String criteriaStorage = scan.next();
-                            int inputStorage = 0;
-                            for (Laptop laptop : lSet) {
-                                if (String.valueOf(laptop.getStorage()).equals(criteriaStorage)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputStorage++;
-                            }
-                            if (inputStorage == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-                            flag2 = false;
-
-                            break;
-                        case 5:
-                            System.out.println("Введите желаемую операционную систему: ");
-                            String criteriaOs = scan.next();
-                            int inputOs = 0;
-                            for (Laptop laptop : lSet) {
-                                if (laptop.getOs().equals(criteriaOs)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputOs++;
-                            }
-                            if (inputOs == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-
-                            flag2 = false;
-                            break;
-                        case 6:
-                            System.out.println("Введите желаемый цвет: ");
-                            String criteriaColour = scan.next();
-                            int inputColour = 0;
-                            for (Laptop laptop : lSet) {
-                                if (laptop.getColour().equals(criteriaColour)) {
-                                    System.out.println(laptop);
-                                } else
-                                    inputColour++;
-                            }
-                            if (inputColour == lSet.size()) {
-                                System.out.println("Таких ноутбуков нет!");
-                            }
-
-                            flag2 = false;
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-
-            } catch (Exception e) {
-                System.out.println("Некорректный ввод! Введите цифру!");
-                flag2 = false;
-            }
-        }
-        scan.close();
     }
 
     public static void showAllLaptops(Set<Laptop> set) {
@@ -194,7 +76,7 @@ public class task {
         }
     }
 
-    public static void criteriaMap() {
+    public static Map<Integer, String> criteriaMap() {
         System.out.println("\nВведите цифру, какой критерий хотите использовать?");
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "Наименование");
@@ -204,7 +86,7 @@ public class task {
         map.put(5, "Операционная система");
         map.put(6, "Цвет");
 
-        printMap(map);
+        return map;
     }
 
     public static void printMap(Map<Integer, String> map) {
@@ -212,4 +94,110 @@ public class task {
             System.out.println(item.getKey() + "-" + item.getValue());
         }
     }
+
+    public static Map<Integer, String> criteriasFromUser() {
+        Scanner scan = new Scanner(System.in);
+        Map<Integer, String> map = new HashMap<>();
+        int inputFirstNumOfCriteria = scan.nextInt();
+        switch (inputFirstNumOfCriteria) {
+            case 1:
+                System.out.println("Введите наименование: ");
+                map.put(1, scan.next());
+                break;
+            case 2:
+                System.out.println("Введите желаемую диагональ: ");
+                map.put(2, scan.next());
+                break;
+            case 3:
+                System.out.println("Введите желаемый объем RAM: ");
+                map.put(3, scan.next());
+                break;
+            case 4:
+                System.out.println("Введите желаемый объем жесткого диска: ");
+                map.put(4, scan.next());
+                break;
+            case 5:
+                System.out.println("Введите желаемую операционную систему: ");
+                map.put(5, scan.next());
+                break;
+            case 6:
+                System.out.println("Введите желаемый цвет: ");
+                map.put(6, scan.next());
+                break;
+            default:
+                System.out.println("Такого выбора нет!");
+                break;
+        }
+        // System.out.println(map2.get(2));
+        return map;
+
+    }
+
+    public static Map<Integer, String> plusCriteria(Map<Integer, String> map, Map<Integer, String> mapAllCriterias) {
+        System.out.println("Хотите добавить критерий? 1 - да, 2 - нет: ");
+        Scanner scan = new Scanner(System.in);
+        switch (scan.nextInt()) {
+            case 1:
+                Boolean flags = true;
+                // System.out.println("Введите критерий: ");
+                while (flags) {
+                    if (map.size() < 6) {
+                        System.out.println("Номер критерия: ");
+                        int w = scan.nextInt();
+                        if (!map.containsKey(w)) {
+                            if (mapAllCriterias.containsKey(w)) {
+                                System.out.println(mapAllCriterias.get(w));
+                                map.put(w, scan.next());
+                                flags = false;
+                                plusCriteria(map, mapAllCriterias);
+                            }
+                        } else
+                            System.out.println("Критерий уже есть!");
+                    } else {
+                        System.out.println("Все фильтры использованы!");
+                        flags = false;
+                    }
+                }
+                break;
+            case 2:
+                // System.out.println(map);
+                break;
+
+            default:
+                break;
+        }
+        scan.close();
+        return map;
+
+    }
+
+    public static void showLaptopsAfterCriterias(Map<Integer, String> map, Set<Laptop> set) {
+        if (map.containsKey(1)) {
+            set.removeIf(item -> !map.get(1).equals(item.getName()));
+        }
+        if (map.containsKey(2)) {
+            set.removeIf(item -> !map.get(2).equals(String.valueOf(item.getScreenSize())));
+        }
+        if (map.containsKey(3)) {
+            set.removeIf(item -> !map.get(3).equals(String.valueOf(item.getMemory())));
+        }
+        if (map.containsKey(4)) {
+            set.removeIf(item -> !map.get(4).equals(String.valueOf(item.getStorage())));
+        }
+        if (map.containsKey(5)) {
+            set.removeIf(item -> !map.get(5).equals(item.getOs()));
+        }
+        if (map.containsKey(6)) {
+            set.removeIf(item -> !map.get(6).equals(item.getColour()));
+        }
+
+        System.out.println("\nНоутбук(и) соответствующий(ие) вашим характеристикам:\n ");
+        for (Laptop laptop : set) {
+            System.out.println(laptop);
+        }
+        if (set.size() == 0)
+            System.out.println("Таких ноутбуков нет!!!");
+        System.out.println();
+    }
+
 }
